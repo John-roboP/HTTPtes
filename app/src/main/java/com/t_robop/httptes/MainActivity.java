@@ -62,7 +62,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     public void button00(View v){
+
         tv0.setText(json);
+        //これでデータが表示で来たらOKだが今の段階だとボタンを押すとBBBになる。
+        /**
+         *
+         *
+         * apache2のログからインターネットに接続できているのは確認済み、JSONの取得コードが未完成**/
     }
 
 
