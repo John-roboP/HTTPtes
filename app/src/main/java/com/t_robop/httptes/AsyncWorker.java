@@ -2,7 +2,7 @@ package com.t_robop.httptes;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.util.Log;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,7 +79,7 @@ public class AsyncWorker extends AsyncTaskLoader<String> {
 */
 
         } catch (Exception e) {
-            
+
             e.printStackTrace();
         }
 
