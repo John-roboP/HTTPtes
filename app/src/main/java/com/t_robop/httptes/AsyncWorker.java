@@ -18,9 +18,10 @@ import java.net.URL;
 public class AsyncWorker extends AsyncTaskLoader<String> {
 
     private JSONObject tx0;
- //   private String url;
-    JSONArray datase;
+   private String url;
+
     String Myname="AAAA";
+    JSONObject json = new JSONObject();
 
     public AsyncWorker(Context context) {
        super(context);
@@ -31,7 +32,7 @@ public class AsyncWorker extends AsyncTaskLoader<String> {
     public String loadInBackground() {
         //非同期でインターネット接続
 
-        String json = "DDD";
+
 
         HttpURLConnection connection = null;
         try {
@@ -51,13 +52,13 @@ public class AsyncWorker extends AsyncTaskLoader<String> {
 // 接続
             connection.connect();
 
-/*
+
 
             try {
 
                 //url からJsonを取得する処理・・・
 
-                datase = json.getJSONArray("datas");
+                JSONArray datase = json.getJSONArray("datas");
 
                 for (int i = 0; i < datase.length(); i++) {
                     JSONObject data =datase.getJSONObject(i);
@@ -76,14 +77,14 @@ public class AsyncWorker extends AsyncTaskLoader<String> {
                 e.printStackTrace();
             }
 
-*/
+
 
         } catch (Exception e) {
 
             e.printStackTrace();
         }
 
-        return json;
+        return Myname;
     }
 
 }
