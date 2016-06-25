@@ -16,9 +16,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
   String json="BBB";
     TextView tv0;
- //   JSONArray datase;
+
     Bundle args = new Bundle(1);
-  //  private static final String KEY_URL_STR = "http://192.168.0.31/";
+
 
 
     @Override
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
         tv0 = (TextView) findViewById(R.id.textView0);
 
-        getSupportLoaderManager().initLoader(0, args, this);
+        getSupportLoaderManager().initLoader(0, args, this);//onCreateLoader起動
 
 
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         AsyncWorker loader = new AsyncWorker(getApplication());
         loader.forceLoad(); //これでロードが始まる。AsyncTaskLoader#onStartLoading内に実装するのも可。
-        return null;
+        return null;//ここの返り値はnullでいいのだろうか・・・
         /**  String urlStr = args.getString(KEY_URL_STR);
        // if (! TextUtils.isEmpty(urlStr)) {
          return new AsyncWorker(getApplicationContext(),json);
@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<String> loader, String Myname) {
-     //   tv0.setText(tx0);
+
        json=Myname;
-        json="CCC";
+        json="CCC";//確認のためCCCを代入
     }
 
     @Override
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void button00(View v){
 
         tv0.setText(json);
-        //これでデータが表示で来たらOKだが今の段階だとボタンを押すとBBBになる。
+        //これでデータが表示できたらOKだが今の段階だとボタンを押すとBBBになる。onLoadfinishedが呼ばれていないのかも
         /**
          *
          *

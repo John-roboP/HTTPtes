@@ -25,7 +25,7 @@ public class AsyncWorker extends AsyncTaskLoader<String> {
 
     public AsyncWorker(Context context) {
        super(context);
-       // this.url = url;
+
     }
 
     @Override
@@ -65,26 +65,22 @@ public class AsyncWorker extends AsyncTaskLoader<String> {
 
                     // 名前を取得
                     Myname = data.getString("name");
-                    // 年齢を取得
-                    // String age = data.getString("age");
-
-                    //   tv0.setText(Myname);
-
+                //サーバーの内容を変えてテストしたが読み取れず
 
                 }
 
             } catch (JSONException e) {
-                e.printStackTrace();
+                e.printStackTrace();//例外
             }
 
 
 
         } catch (Exception e) {
 
-            e.printStackTrace();
+            e.printStackTrace();//例外
         }
 
-        return Myname;
+        return Myname;//returnしているか怪しい。
     }
 
 }
