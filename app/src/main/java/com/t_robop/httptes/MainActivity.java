@@ -1,75 +1,91 @@
 package com.t_robop.httptes;
 
 
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
+import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Loader;
 import android.os.Bundle;
-
-
-import android.view.View;
+import android.util.Log;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+//TODO コードは藤田ので動くかも jsonの書き方が間違ってたっぽい
+public class MainActivity extends Activity
+        implements LoaderCallbacks<JSONObject>{
 
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>  {
+    private static final int ADDRESSLOADER_ID = 0;
 
-  String json="BBB";
-    TextView tv0;
- //   JSONArray datase;
-    Bundle args = new Bundle(1);
-  //  private static final String KEY_URL_STR = "http://192.168.0.31/";
-
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tv0 = (TextView) findViewById(R.id.textView0);
 
-        getSupportLoaderManager().initLoader(0, args, this);
+        textView = (TextView) findViewById(R.id.textView0);
 
-
-
+        getLoaderManager().restartLoader(ADDRESSLOADER_ID, null, this);
 
     }
 
     @Override
-    public Loader<String> onCreateLoader(int i, Bundle bundle) {
+    public Loader<JSONObject> onCreateLoader(int id, Bundle args) {
+        // TODO 自動生成されたメソッド・スタブ
 
-        AsyncWorker loader = new AsyncWorker(getApplication());
-        loader.forceLoad(); //これでロードが始まる。AsyncTaskLoader#onStartLoading内に実装するのも可。
-        return null;
-        /**  String urlStr = args.getString(KEY_URL_STR);
-       // if (! TextUtils.isEmpty(urlStr)) {
-         return new AsyncWorker(getApplicationContext(),json);
-    //    }
+        String url = "http://t-robop.org/test/test2.json";
 
-        **/
-
+        return new AsyncWorker(this, url);
     }
 
     @Override
-    public void onLoadFinished(Loader<String> loader, String Myname) {
-     //   tv0.setText(tx0);
-       json=Myname;
-        json="CCC";
+    public void onLoadFinished(Loader<JSONObject> loader, JSONObject data) {
+        // TODO 自動生成されたメソッド・スタブ
+        if (data != null) {
+
+            try {
+
+                JSONObject jsonObject = data.getJSONObject("pidatas");
+                //String date = jsonObject.getString("date");
+                //textView.append(date);
+
+                //JSONObject jsDataList = jsonObject.getJSONObject("temperature");
+
+
+//                for (int i = 0; i < jsDataList.length(); i++) {
+//
+//                    JSONObject jsData = jsDataList.getJSONObject(i);
+//
+//                    String start_time = jsData.getString("start_time");
+//                    String end_time = jsData.getString("end_time");
+//                    String title = jsData.getString("title");
+//                    String subtitle = jsData.getString("subtitle");
+//
+//                    String text =
+//                            start_time + "\n" +
+//                                    end_time + "\n" +
+//                                    title + "\n" +
+//                                    subtitle + "\n";
+//            }
+
+
+
+            } catch (JSONException e) {
+                Log.d("onLoadFinished","JSONのパースに失敗しました。 JSONException=" + e);
+            }
+
+
+        }else{
+            Log.d("onLoadFinished", "onLoadFinished error!");
+        }
     }
 
     @Override
-    public void onLoaderReset(Loader<String> arg0) {
-        //今回は使わない
+    public void onLoaderReset(Loader<JSONObject> loader) {
+        // TODO 自動生成されたメソッド・スタブ
+
     }
-
-    public void button00(View v){
-        tv0.setText(json);
-    }
-
-
 
 }
-
-
-
-
-

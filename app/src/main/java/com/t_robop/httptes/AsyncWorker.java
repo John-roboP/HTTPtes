@@ -2,89 +2,74 @@ package com.t_robop.httptes;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.util.Log;
 
-
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
-import java.net.HttpURLConnection;
-import java.net.URL;
+
+import java.io.ByteArrayOutputStream;
 
 
-//非同期処理
-/**
- * Created by Ryo on 2016/06/25.
- */
-public class AsyncWorker extends AsyncTaskLoader<String> {
+public class AsyncWorker extends AsyncTaskLoader<JSONObject> {
 
-    private JSONObject tx0;
-   private String url;
+    private String urlText;
 
-    String Myname="AAAA";
-    JSONObject json = new JSONObject();
-
-    public AsyncWorker(Context context) {
-       super(context);
-       // this.url = url;
+    public AsyncWorker(Context context,String urlText) {
+        super(context);
+        // TODO 自動生成されたコンストラクター・スタブ
+        this.urlText = urlText;
     }
 
     @Override
-    public String loadInBackground() {
-        //非同期でインターネット接続
+    public JSONObject loadInBackground() {
+        // TODO 自動生成されたメソッド・スタブ
 
+        HttpClient httpClient = new DefaultHttpClient();
 
+        StringBuilder uri = new StringBuilder(urlText);
+        HttpGet request = new HttpGet(uri.toString());
+        HttpResponse httpResponse = null;
 
-        HttpURLConnection connection = null;
         try {
+            httpResponse = httpClient.execute(request);
+        } catch (Exception e) {
+            Log.d("JsonLoader", "Error Execute");
+            return null;
+        }
 
-            // URLの作成
-            URL url = new URL("http://192.168.0.31/");
+        int status = httpResponse.getStatusLine().getStatusCode();
 
-// 接続用HttpURLConnectionオブジェクト作成
-            connection = (HttpURLConnection) url.openConnection();
-// リクエストメソッドの設定
-            connection.setRequestMethod("GET");
-// リダイレクトを自動で許可しない設定
-            connection.setInstanceFollowRedirects(false);
-// ヘッダーの設定(複数設定可能)
-            connection.setRequestProperty("Accept-Language", "jp");
-
-// 接続
-            connection.connect();
-
-
+        if (HttpStatus.SC_OK == status) {
 
             try {
 
-                //url からJsonを取得する処理・・・
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                httpResponse.getEntity().writeTo(outputStream);
+                String data;
+                data = outputStream.toString(); // JSONデータ
 
-                JSONArray datase = json.getJSONArray("datas");
+                JSONObject rootObject = new JSONObject(data);
 
-                for (int i = 0; i < datase.length(); i++) {
-                    JSONObject data =datase.getJSONObject(i);
+                return rootObject;
 
-                    // 名前を取得
-                    Myname = data.getString("name");
-                    // 年齢を取得
-                    // String age = data.getString("age");
-
-                    //   tv0.setText(Myname);
-
-
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Log.d("JsonLoader", "Error");
             }
-
-
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
+        } else {
+            Log.d("JsonLoader", "Status" + status);
+            return null;
         }
+        return null;
+    }
 
-        return Myname;
+    @Override
+    protected void onStartLoading() {
+        // TODO 自動生成されたメソッド・スタブ
+        forceLoad();
     }
 
 }
